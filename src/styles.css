@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container2 {
+  background-color: #f1f1f1;
+  padding: 15px;
+  margin: 5px;
+  border-radius: 15px
+}
+
+.modal1 {
+  background-color: rgba(1,1,1,0.6);
+}
+
+/* Animação para o modal */
+@layer components { /* Colocar dentro de @layer components para que o Tailwind possa otimizar */
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .animate-modalFadeInScale {
+    animation: fadeInScale 0.3s ease-out forwards;
+  }
+
+  /* Definições base para os botões e inputs (se você não as tiver definido com @apply em outro lugar) */
+  /* Estas são as classes que você comentou no seu código original */
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+  .form-input, .form-select {
+    @apply block w-full px-3 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+           transition duration-150 ease-in-out;
+  }
+  .form-select {
+    @apply appearance-none bg-white; /* Tailwind já lida com a seta em form-select, mas appearance-none pode ser útil */
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm
+           hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+           disabled:opacity-60 disabled:cursor-not-allowed transition ease-in-out duration-150;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm
+           hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+           disabled:opacity-60 disabled:cursor-not-allowed transition ease-in-out duration-150;
+  }
+  /* .btn-danger - adicione se precisar para outros botões */
+  .btn-edit-small {
+    @apply inline-flex items-center justify-center text-xs font-medium bg-yellow-100 hover:bg-yellow-200 text-yellow-700 py-1.5 px-3 rounded-md transition duration-150 ease-in-out;
+  }
+  .btn-danger-small {
+    @apply inline-flex items-center justify-center text-xs font-medium bg-red-100 hover:bg-red-200 text-red-700 py-1.5 px-3 rounded-md transition duration-150 ease-in-out;
+  }
+  /* .spinner - o SVG do spinner já está inline no botão de submit, mas se precisar de uma classe spinner genérica: */
+  /*
+  .spinner {
+    @apply inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin;
+  }
+  */
+}
+
+@layer components {
+  /* Animação para o modal */
+  @keyframes fadeInScale { /* ... */ }
+  .animate-modalFadeInScale { /* ... */ }
+
+  .form-label { @apply block text-sm font-medium text-gray-700 mb-1.5; }
+  .form-input, .form-select { /* ... sua definição ... */ }
+  .form-select { /* ... sua definição ... */ }
+  .btn-primary { /* ... sua definição ... */ }
+  .btn-secondary { /* ... sua definição ... */ }
+  /* .btn-danger, .btn-edit-small, .btn-danger-small - não usados diretamente aqui, mas bom ter */
+}
