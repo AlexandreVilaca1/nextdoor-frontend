@@ -1,7 +1,11 @@
-// src/components/taskRealization/TaskRealizationCard.tsx
 import React, { useState } from 'react';
 import { realizacaoTarefa } from './taskRealizationTypes';
 import TaskRealizationModal from './taskRealizationInfoModal';
+
+interface TaskRealizationCardProps {
+  task: realizacaoTarefa;
+  onUpdate: () => void;  // Adicionado onUpdate
+}
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -36,7 +40,7 @@ const getCategoryAccentColor = (categoria: string): string => {
   }
 };
 
-const TaskRealizationCard: React.FC<{ task: realizacaoTarefa }> = ({ task }) => {
+const TaskRealizationCard: React.FC<TaskRealizationCardProps> = ({ task, onUpdate }) => {
   const [showModal, setShowModal] = useState(false);
 
   const categoria = task.criacaoTarefa.categoriaTarefa;
@@ -79,7 +83,11 @@ const TaskRealizationCard: React.FC<{ task: realizacaoTarefa }> = ({ task }) => 
       </div>
 
       {showModal && (
-        <TaskRealizationModal task={task} onClose={() => setShowModal(false)} />
+        <TaskRealizationModal 
+          task={task} 
+          onClose={() => setShowModal(false)} 
+          onUpdate={onUpdate} // Passar a função para o modal
+        />
       )}
     </>
   );

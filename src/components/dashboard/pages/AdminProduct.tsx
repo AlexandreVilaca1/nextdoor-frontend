@@ -289,7 +289,6 @@ export const AdminProduct = () => {
   };
 
   
-  // Usam as listas que são populadas para os dropdowns
   const getEstabelecimentoNomeFallback = (idApi: number | undefined): string => {
     if (idApi === undefined || estabelecimentosLista.length === 0) return 'N/A';
     return estabelecimentosLista.find(e => e.idEstabelecimento === idApi)?.nomeEstabelecimento || `ID ${idApi} Descon.`;
@@ -457,7 +456,7 @@ export const AdminProduct = () => {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="imagemProduto" className="form-label">URL da Imagem do Produto (Opcional)</label>
+                    <label htmlFor="imagemProduto" className="form-label">URL da Imagem do Produto </label>
                     <input id="imagemProduto" type="url" name="imagemProduto" placeholder="https://exemplo.com/imagem.jpg" className="form-input" value={currentProduct.imagemProduto || ''} onChange={handleInputChange} />
                     {currentProduct.imagemProduto && (currentProduct.imagemProduto.startsWith('http://') || currentProduct.imagemProduto.startsWith('https://')) && (
                         <div className="mt-2">
@@ -488,7 +487,7 @@ export const AdminProduct = () => {
           {!isLoading && produtos.length === 0 && !message && (
             <div className="py-10 text-center bg-white border rounded-lg shadow-sm">
               <PhotoIcon className="mx-auto h-16 w-16 text-gray-400" />
-              <h3 className="mt-2 text-lg font-medium text-gray-900">Nenhum produto cadastrado</h3>
+              <h3 className="mt-2 text-lg font-medium text-gray-900">Nenhum produto registado</h3>
               <p className="mt-1 text-sm text-gray-500">Comece por adicionar um novo produto.</p>
             </div>
           )}

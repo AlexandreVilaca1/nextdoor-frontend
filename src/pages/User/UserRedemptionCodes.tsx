@@ -1,24 +1,22 @@
-// src/pages/User/UserRedemptionCodes.tsx (ou onde quer que esta página esteja)
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
-import { UserHeader } from './UserHeader'; // Ajuste o caminho para o seu UserHeader
-import { Footer } from '../../components/Footer';       // Ajuste o caminho para o seu Footer
+import { UserHeader } from './UserHeader';
+import { Footer } from '../../components/Footer';
 import {
   TicketIcon,
   CalendarDaysIcon,
-  CheckBadgeIcon, // Para estado "Utilizado" ou "Pendente"
-  ClockIcon,      // Para estado "Pendente" ou data de expiração
-  BuildingStorefrontIcon, // Para Estabelecimento
-  CubeIcon,       // Fallback para imagem do produto
-  ExclamationTriangleIcon, // Para erros
-  ArrowPathIcon,  // Para botão de recarregar
-  ChevronLeftIcon, ChevronRightIcon // Para paginação
+  CheckBadgeIcon,
+  ClockIcon,
+  BuildingStorefrontIcon,
+  CubeIcon,
+  ExclamationTriangleIcon,
+  ArrowPathIcon,
+  ChevronLeftIcon, ChevronRightIcon
 } from '@heroicons/react/24/outline';
 
-const ITEMS_PER_PAGE = 4; // Quantos códigos por página
+const ITEMS_PER_PAGE = 4;
 
-// Interfaces para os dados que vêm da API
 interface EstabelecimentoInfo {
   idEstabelecimento: number;
   nomeEstabelecimento: string;
@@ -29,56 +27,48 @@ interface ProdutoInfo {
   nomeProduto: string;
   imagemProduto?: string;
   descricaoProduto?: string;
-  Estabelecimento?: EstabelecimentoInfo; // Aninhado dentro de Produto
+  Estabelecimento?: EstabelecimentoInfo;
 }
 
 interface EstadoResgateInfo {
   idEstadoResgate: number;
-  estadoResgate: string; // Ex: "Pendente", "Utilizado", "Expirado"
+  estadoResgate: string;
 }
 
-// Estrutura de cada código de resgate
 interface UserRedemptionCode {
-  idResgateCodigo: number; // Confirme o nome da PK da sua tabela/modelo resgateCodigo
+  idResgateCodigo: number;
   codigo: string;
   dataResgate: string;
   ProdutoidProduto: number;
   UtilizadoridUtilizador: number;
-  estadoResgateidEstadoResgate: number; // FK
-
-  Produto?: ProdutoInfo;      // Objeto aninhado do produto (nome do modelo, se não houver alias)
-  EstadoResgate?: EstadoResgateInfo; // Objeto aninhado do estado (nome do modelo, se não houver alias)
+  estadoResgateidEstadoResgate: number;
+  Produto?: ProdutoInfo;
+  EstadoResgate?: EstadoResgateInfo;
 }
 
-// Estrutura da resposta da API para GET /
 interface GetRedemptionCodesResponse {
   redemptionCodes: UserRedemptionCode[];
   totalItems: number;
   totalPages: number;
   currentPage: number;
-  message?: string; // Opcional
+  message?: string;
 }
-
 
 export const UserRedemptionCodes: React.FC = () => {
   const [codes, setCodes] = useState<UserRedemptionCode[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Estados para paginação
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  // const [totalItems, setTotalItems] = useState(0); // Opcional, se precisar exibir
 
   const formatDate = (dateString: string) => {
     if (!dateString) return 'N/A';
     try {
       return new Date(dateString).toLocaleDateString('pt-PT', {
-        day: '2-digit', month: 'long', year: 'numeric',
-        // hour: '2-digit', minute: '2-digit' // Removido para simplificar, adicione se precisar
+        day: '2-digit', month: 'long', year: 'numeric'
       });
     } catch (e) {
-      return dateString; // Retorna a string original se a data for inválida
+      return dateString;
     }
   };
 
@@ -95,7 +85,6 @@ export const UserRedemptionCodes: React.FC = () => {
     }
 
     try {
-      // A rota já está correta: /api/redemptionCodes/ (que internamente busca os do usuário logado)
       const response = await axios.get<GetRedemptionCodesResponse>(`http://localhost:3000/api/redemptionCodes/`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { page: pageToFetch, limit: ITEMS_PER_PAGE }
@@ -103,33 +92,29 @@ export const UserRedemptionCodes: React.FC = () => {
       setCodes(response.data.redemptionCodes || []);
       setTotalPages(response.data.totalPages || 0);
       setCurrentPage(response.data.currentPage || 1);
-      // setTotalItems(response.data.totalItems || 0);
     } catch (err) {
       console.error("UserRedemptionCodes: Erro ao buscar códigos:", err);
       const axiosError = err as AxiosError<any>;
       const errorMsg = axiosError.response?.data?.error || axiosError.message || 'Falha ao carregar os seus códigos de resgate.';
       setError(errorMsg);
-      setCodes([]); // Limpar códigos em caso de erro
+      setCodes([]);
       setTotalPages(0);
     } finally {
       setIsLoading(false);
     }
-  }, []); // ITEMS_PER_PAGE é constante, não precisa estar nas dependências
+  }, []);
 
   useEffect(() => {
     fetchData(currentPage);
   }, [fetchData, currentPage]);
 
-
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
-      setCurrentPage(newPage); // O useEffect acima irá disparar fetchData com a nova página
+      setCurrentPage(newPage);
     }
   };
 
   const renderPageNumbers = (): (number | string)[] => {
-    // Reutilize a lógica de renderPageNumbers do AdminEstablishments ou AdminProducts
-    // Vou colar uma versão aqui para completude:
     const pageNumbers: (number | string)[] = [];
     if (totalPages === 0) return pageNumbers;
     const maxPagesToShow = 5;
@@ -143,10 +128,10 @@ export const UserRedemptionCodes: React.FC = () => {
         let startPage = Math.max(2, currentPage - halfPagesToShow);
         let endPage = Math.min(totalPages - 1, currentPage + halfPagesToShow);
 
-        if (currentPage - 1 <= halfPagesToShow) { // Perto do início
+        if (currentPage - 1 <= halfPagesToShow) {
             endPage = Math.min(totalPages - 1, maxPagesToShow - 2);
         }
-        if (totalPages - currentPage <= halfPagesToShow) { // Perto do fim
+        if (totalPages - currentPage <= halfPagesToShow) {
             startPage = Math.max(2, totalPages - (maxPagesToShow - 2));
         }
         
@@ -162,7 +147,7 @@ export const UserRedemptionCodes: React.FC = () => {
         if (showEndEllipsis) pageNumbers.push('...');
         pageNumbers.push(totalPages);
     }
-    return [...new Set(pageNumbers)]; // Remove duplicados e mantém a ordem
+    return [...new Set(pageNumbers)];
   };
 
   const getStatusIconAndColor = (statusName?: string) => {
@@ -173,12 +158,10 @@ export const UserRedemptionCodes: React.FC = () => {
     if (lowerStatus === 'expirado') {
       return { Icon: ExclamationTriangleIcon, color: 'text-red-500', label: 'Expirado' };
     }
-    // Default para "Pendente" ou outros
     return { Icon: ClockIcon, color: 'text-yellow-500', label: statusName || 'Pendente' };
   };
 
-
-  if (isLoading && codes.length === 0) { // Mostrar loading principal apenas na primeira carga
+  if (isLoading && codes.length === 0) {
     return (
       <div className="flex min-h-screen bg-gray-100 flex-col">
         <UserHeader />
@@ -267,7 +250,6 @@ export const UserRedemptionCodes: React.FC = () => {
               })}
             </div>
 
-            {/* Paginação */}
             {totalPages > 1 && (
                 <div className="mt-10 flex justify-center items-center space-x-2">
                     <button
@@ -309,7 +291,7 @@ export const UserRedemptionCodes: React.FC = () => {
             )}
           </>
         ) : (
-          !isLoading && !error && ( // Mostrar apenas se não estiver carregando e não houver erro
+          !isLoading && !error && (
             <div className="text-center py-16 bg-white rounded-lg shadow-md">
               <TicketIcon className="mx-auto h-16 w-16 text-gray-300" />
               <h3 className="mt-4 text-xl font-semibold text-gray-700">Nenhum código de resgate encontrado.</h3>

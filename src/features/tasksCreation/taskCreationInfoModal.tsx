@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import React from 'react';
 import { criacaoTarefa } from './taskCreationTypes';
-import {createTaskRealization} from "../taskRealization/taskRealizationService"
+import { createTaskRealization } from "../taskRealization/taskRealizationService";
 import { updateTaskCreationStatus } from "./taskCreationService";
 
 interface TaskCreationModalProps {
   task: criacaoTarefa;
   onClose: () => void;
+  onUpdate: () => void;   // <-- nova prop para atualizar lista
 }
 
-const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
+const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose, onUpdate }) => {
   const [show, setShow] = useState(false);
-  
 
   useEffect(() => {
     setShow(true);
@@ -24,16 +24,18 @@ const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
     }, 300);
   };
 
-  const handleTaskRealization = async () => {
+  const handleTaskCreation = async () => {
     try {
       await createTaskRealization({
         criacaoTarefaidTarefaCriada: task.idTarefaCriada
       });
-  
-      await updateTaskCreationStatus(task.idTarefaCriada, 3); //Aceite
-    //
-  
+
+      await updateTaskCreationStatus(task.idTarefaCriada, 3); // Aceite
+
       alert("Now you can see your task in execution on the page running task");
+
+      onUpdate();  // Atualiza a lista no componente pai
+
       handleClose();
     } catch (error: any) {
       alert(error.message);
@@ -75,8 +77,8 @@ const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
         {/* Botão Realizar */}
         <div className="flex justify-end">
           <button
-            onClick={handleTaskRealization}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+            onClick={handleTaskCreation}
+            className="px-4 py-2 text-sm font-medium text-white bg-[#4CAF4F] rounded-md hover:bg-[#3e8e41] focus:outline-none disabled:opacity-50"
           >
             Realizar
           </button>

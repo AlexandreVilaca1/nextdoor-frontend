@@ -14,7 +14,6 @@ import {
   InformationCircleIcon,
   ChevronLeftIcon, ChevronRightIcon,
   MagnifyingGlassIcon,
-  // XCircleIcon, // Para o botão Limpar Filtros, se quiser usar
 } from '@heroicons/react/24/outline';
 
 const token = Cookies.get('jwt');
@@ -94,8 +93,6 @@ export const AdminEstablishments = () => {
 
   const fetchData = useCallback(async () => {
     setIsLoadingData(true);
-    // Não resetar mensagem aqui para permitir que mensagens de sucesso/erro de submissões persistam
-    // setMessage(null); 
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const [estabRes, neighRes, addrRes] = await Promise.all([
@@ -451,6 +448,7 @@ export const AdminEstablishments = () => {
             </div>
           )}
 
+          {/* Ver Detalhes */}
           {showDetailsModal && selectedEstablishmentDetails && (
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[100]" onClick={handleCloseDetailsModal}>
                 <div className="bg-white p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-lg transform transition-all animate-modalFadeInScale" onClick={(e) => e.stopPropagation()}>
