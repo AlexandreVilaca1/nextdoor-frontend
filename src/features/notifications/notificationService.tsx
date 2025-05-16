@@ -17,10 +17,11 @@ export async function fetchNotifications(): Promise<Notificacao[]> {
     throw new Error(data.error || 'Error fetching notifications');
   }
 
+  console.log(data.message);
   return data.notification; 
 }
 
-export async function createNotification(massage: string, taskRealizationId: number): Promise<void> {
+export async function createNotification(massage: string, taskRealizationId: number): Promise<Notificacao> {
   const token = Cookies.get("jwt");
 
   const response = await fetch("http://localhost:3000/api/notifications", {
@@ -36,17 +37,32 @@ export async function createNotification(massage: string, taskRealizationId: num
     }),
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
-    let errorMessage = "Error creating notification.";
-    try {
-      const errorData = await response.json();
-      if (errorData && errorData.error) {
-        //Backend envia { "error": "mensagem..." }
-        errorMessage = errorData.error;
-      }
-    } catch (error) {
-      console.error("Unable to parse JSON error response:", error);
-    }
-    throw new Error(errorMessage);
+    throw new Error(data.error || 'Error creating task Task Creation Service');
   }
+
+  console.log(data.message)
+  return data.notification
+} 
+
+export async function fetchNotificationById(notificationId: number): Promise<Notificacao> {
+  const token = Cookies.get("jwt");
+
+  const response = await fetch(`http://localhost:3000/api/notifications/${notificationId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Error fetching notification");
+  }
+
+  console.log(data.message);
+  return data.notification;
 }

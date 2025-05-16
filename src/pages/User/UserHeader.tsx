@@ -5,13 +5,11 @@ import "../../styles.css";
 import { MapPinIcon, TicketIcon } from '@heroicons/react/24/outline';
 import CreateTaskModal from '../../features/tasksCreation/createTaskModal'; // Import do modal
 
-// Interface para o objeto Vizinhanca aninhado
 interface VizinhancaData {
   idVizinhanca: number;
   nomeFreguesia: string;
 }
 
-// Interface UserDataFromAPI atualizada
 interface UserDataFromAPI {
   idUtilizador: number;
   nomeUtilizador: string;
@@ -33,7 +31,6 @@ export const UserHeader: React.FC<UserHeaderProps> = ({ onTaskCreated }) => {
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Estados para modal
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
 
   const handleOpenCreateTaskModal = () => setIsCreateTaskModalOpen(true);
@@ -73,7 +70,7 @@ export const UserHeader: React.FC<UserHeaderProps> = ({ onTaskCreated }) => {
           if (axios.isAxiosError(error)) {
             if (error.response?.status === 401 || error.response?.status === 403) {
               Cookies.remove('jwt');
-              // window.location.href = '/login'; // opcional
+              // window.location.href = '/login'; 
             }
           }
           setCurrentUser(null);

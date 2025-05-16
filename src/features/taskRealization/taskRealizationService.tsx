@@ -16,7 +16,7 @@ export async function fetchTaskRealizations(): Promise<realizacaoTarefa[]> {
   if (!response.ok) {
     throw new Error(data.error || 'Erro ao buscar tarefas realizadas');
   }
-  
+  console.log(data.message);
   return data.task; 
 }
 
@@ -35,12 +35,12 @@ export async function createTaskRealization(data: {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ error: 'Failed to create task realization' }));
-    throw new Error(errorData.error || 'Failed to create task realization');
-  }
-
   const responseData = await response.json();
+
+  if (!response.ok) {
+    throw new Error(responseData.error || 'Failed to create task realization');
+  }
+  console.log(responseData.message);
   return responseData.task;
 }
 
@@ -58,10 +58,11 @@ export async function createTaskRealization(data: {
       body: JSON.stringify({ estadoRealizacaoTarefaidEstadoRealizacaoTarefa: newState }),
     });
   
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('Error updating task creation service');
+      throw new Error(data.error || 'Error updating task creation service');
     }
   
-    const data = await response.json();
     console.log(data.message);
   }

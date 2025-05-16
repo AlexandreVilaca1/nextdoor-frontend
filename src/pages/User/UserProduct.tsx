@@ -1,5 +1,4 @@
-// src/components/UserProduct.tsx
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef, JSX } from 'react';
 import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { 
@@ -26,7 +25,7 @@ interface Produto {
   Estabelecimento?: { idEstabelecimento?: number; nomeEstabelecimento: string; };
   tipoProduto?: { idTipoProduto?: number; tipoProduto: string; };
 }
-interface Categoria { idTipoProduto: number; tipoProduto: string; }
+interface Categoria { idTipoProduto: number; nomeTipoProduto: string; }
 interface RedemptionCodeData { 
   idResgate: number; 
   codigo: string; 
@@ -242,7 +241,7 @@ export const UserProduct: React.FC = () => {
           <div className="relative w-full sm:w-auto sm:min-w-[200px] md:min-w-[240px]">
             <select className="form-select w-full !py-2.5" value={selectedCategoria} onChange={(e) => setSelectedCategoria(e.target.value)} >
               <option value="">Todas as Categorias</option>
-              {categorias.map((cat) => ( <option key={cat.idTipoProduto} value={cat.idTipoProduto.toString()}>{cat.tipoProduto}</option> ))}
+              {categorias.map((cat) => ( <option key={cat.idTipoProduto} value={cat.idTipoProduto.toString()}>{cat.nomeTipoProduto}</option> ))}
             </select>
           </div>
         </div>
@@ -282,7 +281,6 @@ export const UserProduct: React.FC = () => {
                 );
               })}
             </div>
-            {/* CORREÇÃO: Removido o fragmento desnecessário que envolvia a paginação */}
             {totalPages > 1 && filteredProdutos.length > 0 && (
                 <div className="mt-10 flex justify-center items-center space-x-1 sm:space-x-2">
                     <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1 || isLoading} className="px-3 py-2 sm:px-4 border rounded-md bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base">Anterior</button>
@@ -290,7 +288,7 @@ export const UserProduct: React.FC = () => {
                     <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages || isLoading} className="px-3 py-2 sm:px-4 border rounded-md bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base">Próxima</button>
                 </div>
             )}
-          </div> // Fechamento do div que engloba a lista de produtos e a paginação
+          </div> 
         ) : (
           !isLoading && ( 
             <div className="text-center py-16 bg-white rounded-lg shadow-md mt-8">

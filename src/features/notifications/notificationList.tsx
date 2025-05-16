@@ -1,4 +1,3 @@
-// src/features/notifications/notificationList.tsx
 import React, { useEffect, useState } from 'react';
 import NotificationCard from './notificationCard';
 import { Notificacao } from './notificationTypes';

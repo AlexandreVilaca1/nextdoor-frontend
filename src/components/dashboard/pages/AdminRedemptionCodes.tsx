@@ -119,7 +119,7 @@ export const AdminRedemptionCodes: React.FC = () => {
       setCurrentPage(response.data.currentPage || 1);
       setTotalPages(response.data.totalPages || 0);
       setTotalItems(response.data.totalItems || 0);
-      setError(null); // Limpa erro em caso de sucesso
+      setError(null); 
     } catch (err) {
       console.error("AdminRedemptionCodes: Erro ao buscar códigos:", err);
       const axiosError = err as AxiosError<any>;
@@ -130,13 +130,13 @@ export const AdminRedemptionCodes: React.FC = () => {
         errorMsg = axiosError.message;
       }
       setError(errorMsg);
-      setCodes([]); // Limpar dados em caso de erro
+      setCodes([]); 
       setTotalPages(0);
       setTotalItems(0);
     } finally {
       setIsLoading(false);
     }
-  }, []); // ITEMS_PER_PAGE é constante
+  }, []); 
 
   useEffect(() => {
     fetchData(currentPage);
@@ -160,7 +160,7 @@ export const AdminRedemptionCodes: React.FC = () => {
         endPage = totalPages;
     } else {
         const maxPagesBeforeCurrent = Math.floor((maxPagesToShow -1) / 2);
-        const maxPagesAfterCurrent = Math.ceil((maxPagesToShow-1) / 2) -1; // -1 para dar espaço para reticências e última pág.
+        const maxPagesAfterCurrent = Math.ceil((maxPagesToShow-1) / 2) -1; 
         if (currentPage <= maxPagesBeforeCurrent +1 ) {
             startPage = 1;
             endPage = maxPagesToShow -1;
@@ -181,7 +181,7 @@ export const AdminRedemptionCodes: React.FC = () => {
     }
     
     for (let i = startPage; i <= endPage; i++) {
-        if ( i === 0 ) continue; // Evitar página 0 se startPage for ajustado para < 1
+        if ( i === 0 ) continue; 
         pageNumbers.push(i);
     }
 
@@ -191,7 +191,7 @@ export const AdminRedemptionCodes: React.FC = () => {
         }
         pageNumbers.push(totalPages);
     }
-    return [...new Set(pageNumbers)]; // Garante unicidade
+    return [...new Set(pageNumbers)]; 
   };
 
   const openDetailsModal = (code: AdminRedemptionCode) => {
@@ -216,7 +216,7 @@ export const AdminRedemptionCodes: React.FC = () => {
     });
   };
 
-  if (isLoading && codes.length === 0) { // Mostrar loading principal apenas na primeira carga
+  if (isLoading && codes.length === 0) { 
     return (
       <div className="flex min-h-screen bg-gray-100">
         <Sidebar />
@@ -311,7 +311,7 @@ export const AdminRedemptionCodes: React.FC = () => {
               </table>
             </div>
           ) : (
-            !isLoading && !error && ( // Mostrar apenas se não estiver carregando e não houver erro
+            !isLoading && !error && ( 
                 <div className="text-center py-16 bg-white rounded-lg shadow-md">
                 <TicketIcon className="mx-auto h-16 w-16 text-gray-300" />
                 <h3 className="mt-4 text-xl font-semibold text-gray-700">Nenhum código de resgate encontrado.</h3>
@@ -319,7 +319,6 @@ export const AdminRedemptionCodes: React.FC = () => {
                 </div>
             )
           )}
-            {/* Paginação Melhorada */}
             {totalPages > 1 && (
                 <div className="mt-8 flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-b-lg shadow-sm">
                   <div className="flex flex-1 justify-between sm:hidden">
@@ -393,7 +392,7 @@ export const AdminRedemptionCodes: React.FC = () => {
         </main>
       </div>
 
-      {/* Modal de Detalhes do Resgate (mantido como estava) */}
+      {/* Modal de Detalhes do Resgate */}
       {isModalOpen && selectedCode && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-75 overflow-y-auto h-full w-full flex items-center justify-center z-50 p-4 animate-fadeIn">
           <div className="relative bg-white rounded-lg shadow-xl p-6 sm:p-8 w-full max-w-2xl mx-auto animate-slideUpModal">
@@ -451,7 +450,7 @@ export const AdminRedemptionCodes: React.FC = () => {
                 <p><span className="font-medium text-gray-600">ID:</span> {selectedCode.Utilizador?.idUtilizador || 'N/A'}</p>
                 <p><span className="font-medium text-gray-600">Nome:</span> {selectedCode.Utilizador?.nomeUtilizador || 'N/A'}</p>
                 <p><span className="font-medium text-gray-600">Email:</span> {selectedCode.Utilizador?.emailUtilizador || 'N/A'}</p>
-                {selectedCode.Utilizador?.Vizinhanca && ( // Adicionado para mostrar vizinhança do utilizador
+                {selectedCode.Utilizador?.Vizinhanca && ( 
                      <p className="flex items-center"><MapPinIcon className="h-4 w-4 mr-1 text-gray-400"/><span className="font-medium text-gray-600">Vizinhança:</span> <span className="text-gray-700 ml-1">{selectedCode.Utilizador.Vizinhanca.nomeFreguesia || 'N/A'}</span></p>
                 )}
               </section>
@@ -459,7 +458,7 @@ export const AdminRedemptionCodes: React.FC = () => {
               <section>
                 <h4 className="font-semibold text-gray-700 mb-2 flex items-center"><TicketIcon className="h-5 w-5 mr-2 text-gray-500"/>Detalhes do Resgate</h4>
                 <p className="flex items-center"><CalendarDaysIcon className="h-4 w-4 mr-1 text-gray-400"/><span className="font-medium text-gray-600">Data:</span> <span className="text-gray-700 ml-1">{formatDate(selectedCode.dataResgate)}</span></p>
-                {selectedCode.EstadoResgate && ( // Acesso corrigido para EstadoResgate
+                {selectedCode.EstadoResgate && ( 
                     <p className="flex items-center"><CheckBadgeIcon className="h-4 w-4 mr-1 text-gray-400"/><span className="font-medium text-gray-600">Estado:</span> <span className="text-gray-700 ml-1">{selectedCode.EstadoResgate.estadoResgate}</span></p>
                 )}
               </section>

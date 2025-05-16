@@ -1,4 +1,3 @@
-// src/components/tasks/TaskCard.tsx
 import React, { useState } from 'react';
 import { criacaoTarefa } from './taskCreationTypes';
 import TaskModal from './taskCreationInfoModal';  
@@ -24,7 +23,6 @@ const formatDate = (dateString: string) => {
   });
 };
 
-// Função auxiliar para obter um subtítulo curto da descrição
 const getSubtitle = (descricao: string): string => {
   const firstSentenceMatch = descricao.match(/^[^.!?]+[.!?]/);
   if (firstSentenceMatch && firstSentenceMatch[0].length < 70) {
@@ -37,8 +35,12 @@ const getSubtitle = (descricao: string): string => {
   return `${truncated}...`;
 };
 
+interface TaskCardProps {
+  task: criacaoTarefa;
+  onUpdate: () => void;   // nova prop para atualizar lista
+}
 
-const TaskCard: React.FC<{ task: criacaoTarefa }> = ({ task: tarefa }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task: tarefa, onUpdate }) => {
   const [showModal, setShowModal] = useState(false);
   const categoriaNome = tarefa.categoriaTarefa.categoriaTarefa;
   const categoriaPontos = tarefa.categoriaTarefa.pontosCategoria;
@@ -46,9 +48,7 @@ const TaskCard: React.FC<{ task: criacaoTarefa }> = ({ task: tarefa }) => {
 
   return (
     <>
-      {/* Container do card */}
-      <div className="flex flex-col h-full py-2 container2">
-        {/* Seção de Data e Destaque da Categoria */}
+      <div className="flex flex-col h-full p-4 m-2 rounded-xl bg-gray-100 border border-gray-200">
         <div className="flex items-center mb-1">
           <div className={`w-1 h-3.5 ${accentColorClass} mr-2.5 rounded-sm`}></div>
           <p className="text-xs text-gray-500">
@@ -56,14 +56,12 @@ const TaskCard: React.FC<{ task: criacaoTarefa }> = ({ task: tarefa }) => {
           </p>
         </div>
 
-        {/* Seção de Nome da Categoria e Pontos - NOVO */}
         <div className="mb-1.5">
           <p className="text-xs text-gray-500">
             {categoriaNome} - <span className="font-medium text-gray-600"><strong>{categoriaPontos} Pontos</strong></span>
           </p>
         </div>
 
-        {/* Título */}
         <h3
           className="text-base font-semibold text-gray-800 mb-1 hover:text-[#1f4d20] cursor-pointer leading-tight"
           onClick={() => setShowModal(true)}
@@ -72,12 +70,10 @@ const TaskCard: React.FC<{ task: criacaoTarefa }> = ({ task: tarefa }) => {
           {tarefa.nomeTarefa}
         </h3>
 
-        {/* Subtítulo/Descrição Curta */}
         <p className="text-xs text-gray-600 mb-2.5 flex-grow">
           {getSubtitle(tarefa.descricaoTarefa)}
         </p>
 
-        {/* Estilo do Link "Ver detalhes" */}
         <button
           onClick={() => setShowModal(true)}
           className="text-[#4CAF4F] hover:text-[#1f4d20] cursor-pointer font-semibold text-xs flex items-center group self-start"
@@ -88,7 +84,11 @@ const TaskCard: React.FC<{ task: criacaoTarefa }> = ({ task: tarefa }) => {
       </div>
 
       {showModal && (
-        <TaskModal task={tarefa} onClose={() => setShowModal(false)} />
+        <TaskModal 
+          task={tarefa} 
+          onClose={() => setShowModal(false)} 
+          onUpdate={onUpdate}   // passa a função de atualização
+        />
       )}
     </>
   );

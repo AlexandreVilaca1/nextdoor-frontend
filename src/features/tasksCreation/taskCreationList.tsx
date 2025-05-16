@@ -7,17 +7,18 @@ const TaskList: React.FC = () => {
   const [tasks, setTasks] = useState<criacaoTarefa[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const data = await fetchTasks();
-        setTasks(data);
-      } catch (err) {
-        setError('Failed to load tasks');
-        console.error(err);
-      }
-    };
+  const loadTasks = async () => {
+    try {
+      const data = await fetchTasks();
+      setTasks(data);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load tasks');
+      console.error(err);
+    }
+  };
 
+  useEffect(() => {
     loadTasks();
   }, []);
 
@@ -31,8 +32,8 @@ const TaskList: React.FC = () => {
 
   return (
     <div className="flex flex-wrap gap-4">
-      {tasks.map((task, index) => (
-        <TaskCard key={index} task={task} />
+      {tasks.map((task) => (
+        <TaskCard key={task.idTarefaCriada} task={task} onUpdate={loadTasks} />
       ))}
     </div>
   );
