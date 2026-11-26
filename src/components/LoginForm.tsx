@@ -21,8 +21,11 @@ export default function LoginForm () {
         if (response.ok) {
             const data = await response.json();
             const token = data.token;
+            const user = data.user.idUtilizador
       
             Cookies.set('jwt', token, { expires: 1 / 24 });
+            localStorage.setItem("user", JSON.stringify(user));
+            window.location.href = "/tasksCreated"
       
             alert('Login bem-sucedido!');
           } else {

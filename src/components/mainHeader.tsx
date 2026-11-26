@@ -1,9 +1,9 @@
-// src/components/Header.tsx
 import React, { useState, useCallback } from 'react';
-import CreateTaskModal from '../features/tasksCreation/createTaskModal'; // O modal ainda é um componente separado
+import CreateTaskModal from '../features/tasksCreation/createTaskModal';
+
 
 interface HeaderProps {
-  onTaskCreated?: () => void; // Callback para quando uma tarefa é criada
+  onTaskCreated?: () => void; 
 }
 
 export const Header: React.FC<HeaderProps> = ({ onTaskCreated }) => {
@@ -15,9 +15,9 @@ export const Header: React.FC<HeaderProps> = ({ onTaskCreated }) => {
   const handleTaskSuccessfullyCreated = useCallback((newTask: any) => {
     console.log('Nova tarefa criada no Header:', newTask);
     if (onTaskCreated) {
-      onTaskCreated(); // Notifica o componente pai (App.tsx)
+      onTaskCreated(); 
     }
-    handleCloseCreateTaskModal(); // Fecha o modal após a criação
+    handleCloseCreateTaskModal(); 
   }, [onTaskCreated]);
 
   return (
@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ onTaskCreated }) => {
         <div className='flex items-center'>
           <button
             onClick={handleOpenCreateTaskModal}
-            className="bg-[#4CAF4F] hover:bg-[#3e8e41] text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out"
+            className="hover:bg-[#3e8e41] text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out"
             aria-label="Criar nova tarefa"
           >
             Criar Tarefa
@@ -43,8 +43,6 @@ export const Header: React.FC<HeaderProps> = ({ onTaskCreated }) => {
         </div>
       </div>
 
-      {/* Modal de Criação de Tarefa */}
-      {/* O componente CreateTaskModal ainda é útil separado devido à sua complexidade (formulário, lógica de API) */}
       <CreateTaskModal
         isOpen={isCreateTaskModalOpen}
         onClose={handleCloseCreateTaskModal}
@@ -53,5 +51,3 @@ export const Header: React.FC<HeaderProps> = ({ onTaskCreated }) => {
     </>
   );
 };
-
-// export default Header; // ou mantenha export const Header

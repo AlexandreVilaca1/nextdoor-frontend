@@ -1,5 +1,6 @@
 import { Sidebar } from '../components/dashboard/Sidebar';
 import { DashboardHeader } from '../components/dashboard/DashboardHeader';
+import { GraphUsers } from '../components/dashboard/GraphUsers';
 
 export const AdminDashboard = () => {
   return (
@@ -8,9 +9,16 @@ export const AdminDashboard = () => {
       <div className="flex flex-col flex-1">
         <DashboardHeader />
         <main className="p-6">
-          
+          <div className="flex flex-wrap gap-6 justify-between">
+            <div className="flex-1 min-w-[450px] h-[400px] ">
+              <GraphUsers />
+            </div>
+            <div className="flex-1 min-w-[450px] h-[400px] bg-white p-6 rounded-lg shadow-lg">
+            </div>
+          </div>
         </main>
       </div>
     </div>
   );
 };
+
