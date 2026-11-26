@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios"; 
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import Cookies from 'js-cookie';
@@ -151,7 +151,7 @@ export const GraphUsers = () => {
               paddingAngle={2}  
               labelLine={false} 
             >
-              {chartData.map((entry, index) => (
+              {chartData.map((_, index) => (
                 <Cell 
                   key={`cell-${index}`} 
                   fill={COLORS[index % COLORS.length]} 

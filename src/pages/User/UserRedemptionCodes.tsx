@@ -13,7 +13,6 @@ import {
   ExclamationTriangleIcon,
   ArrowPathIcon,
   ChevronLeftIcon, ChevronRightIcon,
-  PhotoIcon as PlaceholderPhotoIcon 
 } from '@heroicons/react/24/outline';
 import "../../styles.css"; 
 const ITEMS_PER_PAGE = 4;

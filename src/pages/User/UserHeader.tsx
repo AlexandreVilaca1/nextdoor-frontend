@@ -26,11 +26,7 @@ interface UserDataFromAPI {
   tipoUtilizadoridTipoUtilizador?: number; 
 }
 
-interface UserHeaderProps {
-  onTaskCreated?: () => void; 
-}
-
-export const UserHeader: React.FC<UserHeaderProps> = ({ onTaskCreated }) => {
+export const UserHeader: React.FC = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserDataFromAPI | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);

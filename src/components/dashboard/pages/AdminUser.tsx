@@ -19,6 +19,7 @@ import {
 import "../../../styles.css"; 
 
 const token = Cookies.get('jwt');
+const ITEMS_PER_PAGE = 8;
 
 interface VizinhançaInfo {
   idVizinhanca: number;
@@ -68,7 +69,6 @@ export const AdminUsers: React.FC = () => {
   const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
@@ -157,9 +157,9 @@ export const AdminUsers: React.FC = () => {
 
   useEffect(() => {
     if (!isLoadingVizinhanças) {
-        fetchUsers(currentPage, itemsPerPage);
+        fetchUsers(currentPage, ITEMS_PER_PAGE);
     }
-  }, [currentPage, itemsPerPage, fetchUsers, isLoadingVizinhanças]);
+  }, [currentPage, fetchUsers, isLoadingVizinhanças]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

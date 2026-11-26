@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'; 
+import React, { useEffect, useState, useCallback } from 'react'; 
 import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
 import { Sidebar } from '../Sidebar';
@@ -7,7 +7,7 @@ import {
     TicketIcon, CalendarDaysIcon, CheckBadgeIcon, UserCircleIcon,
     BuildingStorefrontIcon as EstablishmentIcon, MapPinIcon, CurrencyDollarIcon,
     InformationCircleIcon, XMarkIcon, PhotoIcon, ChevronLeftIcon,
-    ChevronRightIcon, ClipboardDocumentIcon, FunnelIcon, 
+    ChevronRightIcon, ClipboardDocumentIcon,
 } from '@heroicons/react/24/outline';
 import "../../../styles.css"; 
 
