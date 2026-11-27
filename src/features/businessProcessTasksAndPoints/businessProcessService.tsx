@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import Cookies from "js-cookie";
 
 export async function aceptTaskRequest(
@@ -6,7 +7,7 @@ export async function aceptTaskRequest(
 ): Promise<void> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch("http://localhost:3000/api/businessProcesses/validateTask", {
+  const response = await fetch(`${API_URL}/api/businessProcesses/validateTask`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -34,7 +35,7 @@ export async function rejectTaskRequest(
 ): Promise<void> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch("http://localhost:3000/api/businessProcesses/rejectTask", {
+  const response = await fetch(`${API_URL}/api/businessProcesses/rejectTask`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -62,7 +63,7 @@ export async function collectPointsAbandonedTaskRequest(
 ): Promise<void> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch("http://localhost:3000/api/businessProcesses/collectPointsAbandonedTask", {
+  const response = await fetch(`${API_URL}/api/businessProcesses/collectPointsAbandonedTask`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -90,7 +91,7 @@ export async function markTaskAsCompleted(
 ): Promise<void> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch("http://localhost:3000/api/businessProcesses/markTaskAsCompleted", {
+  const response = await fetch(`${API_URL}/api/businessProcesses/markTaskAsCompleted`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -117,7 +118,7 @@ export async function abandonedTask(
 ): Promise<void> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch("http://localhost:3000/api/businessProcesses/abandonedTask", {
+  const response = await fetch(`${API_URL}/api/businessProcesses/abandonedTask`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,

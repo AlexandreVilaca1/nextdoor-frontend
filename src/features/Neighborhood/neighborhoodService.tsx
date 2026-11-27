@@ -1,8 +1,9 @@
+import { API_URL } from "../../config/api";
 import { Neighborhood } from "./neighborhoodTypes";
 
 export async function fetchNeighborhoods(): Promise<Neighborhood[]> {
 
-  const response = await fetch('http://localhost:3000/api/neighborhoods', {
+  const response = await fetch(`${API_URL}/api/neighborhoods`, {
 
   });
 

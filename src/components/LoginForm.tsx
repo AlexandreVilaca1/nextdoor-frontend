@@ -1,3 +1,4 @@
+import { API_URL } from "../config/api";
 import { useState } from "react";
 import "../styles.css";
 import Cookies from 'js-cookie';
@@ -11,7 +12,7 @@ export default function LoginForm () {
 
         console.log(email, password)
 
-        const response = await fetch("http://localhost:3000/api/users/login", {
+        const response = await fetch(`${API_URL}/api/users/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ "emailUtilizador": email, "password": password }),

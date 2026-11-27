@@ -1,3 +1,4 @@
+import { API_URL } from "../../../config/api";
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios, { AxiosError } from 'axios';
 import { Sidebar } from '../Sidebar';
@@ -92,7 +93,7 @@ export const AdminProduct = () => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:3000${imagePath}`;
+    return `${API_URL}${imagePath}`;
   }, []);
 
   const handleApiError = useCallback((err: any, defaultMessage: string) => {
@@ -126,10 +127,10 @@ export const AdminProduct = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const [productsRes, typesRes, statesRes, establishmentsRes] = await Promise.all([
-        axios.get(`http://localhost:3000/api/products/all`, config),
-        axios.get(`http://localhost:3000/api/product-types/`, config),
-        axios.get(`http://localhost:3000/api/product-status/`, config),
-        axios.get(`http://localhost:3000/api/establishments/all`, config),
+        axios.get(`${API_URL}/api/products/all`, config),
+        axios.get(`${API_URL}/api/product-types/`, config),
+        axios.get(`${API_URL}/api/product-status/`, config),
+        axios.get(`${API_URL}/api/establishments/all`, config),
       ]);
       setProdutos(productsRes.data.products || []);
       setTiposProdutoLista(typesRes.data.productTypes || []);
@@ -254,10 +255,10 @@ export const AdminProduct = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       if (isEditing && editingProductId) {
-        await axios.patch(`http://localhost:3000/api/products/${editingProductId}`, formData, config);
+        await axios.patch(`${API_URL}/api/products/${editingProductId}`, formData, config);
         setMessage({ type: 'success', text: 'Produto atualizado com sucesso!' });
       } else {
-        await axios.post(`http://localhost:3000/api/products`, formData, config);
+        await axios.post(`${API_URL}/api/products`, formData, config);
         setMessage({ type: 'success', text: 'Produto adicionado com sucesso!' });
       }
       setShowFormModal(false); resetFormAndImageState(); setIsEditing(false); setEditingProductId(null);
@@ -274,7 +275,7 @@ export const AdminProduct = () => {
     if (!window.confirm("Tem certeza que deseja excluir este produto?")) return;
     setIsSubmitting(true);
     try {
-      await axios.delete(`http://localhost:3000/api/products/${idProduto}`, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.delete(`${API_URL}/api/products/${idProduto}`, { headers: { Authorization: `Bearer ${token}` } });
       setMessage({ type: 'success', text: 'Produto excluído com sucesso.' });
       fetchData();
     } catch (err) {

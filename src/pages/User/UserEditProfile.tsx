@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -64,7 +65,7 @@ export const UserEditProfile: React.FC = () => {
 
       try {
         const response = await axios.get<{ user: UserDataFromAPI }>( 
-          'http://localhost:3000/api/users/profile', 
+          `${API_URL}/api/users/profile`, 
           {
             headers: {
               Authorization: `Bearer ${token}`, 
@@ -150,7 +151,7 @@ export const UserEditProfile: React.FC = () => {
 
     try {
       const userId = currentUserData.idUtilizador; 
-      const response = await axios.patch(`http://localhost:3000/api/users/edit/${userId}`, 
+      const response = await axios.patch(`${API_URL}/api/users/edit/${userId}`, 
         changedData, 
         {
           headers: {

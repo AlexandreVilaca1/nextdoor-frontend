@@ -1,3 +1,4 @@
+import { API_URL } from "../../../config/api";
 import React, { useEffect, useState, useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 import { Sidebar } from '../Sidebar';
@@ -86,7 +87,7 @@ export const AdminUsers: React.FC = () => {
     setIsLoadingVizinhanças(true);
     try {
       const response = await axios.get<FetchVizinhançasApiResponse>(
-        'http://localhost:3000/api/neighborhoods',
+        `${API_URL}/api/neighborhoods`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.data && response.data.neighborhood && Array.isArray(response.data.neighborhood)) {
@@ -123,7 +124,7 @@ export const AdminUsers: React.FC = () => {
     
     try {
       const response = await axios.get<FetchUsersResponse>(
-        'http://localhost:3000/api/users/all',
+        `${API_URL}/api/users/all`,
         {
           headers: { Authorization: `Bearer ${token}` },
           params

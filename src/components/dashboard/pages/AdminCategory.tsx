@@ -1,3 +1,4 @@
+import { API_URL } from "../../../config/api";
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios, { AxiosError } from 'axios';
 import { Sidebar } from '../Sidebar'; 
@@ -89,7 +90,7 @@ export const AdminCategory: React.FC = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const response = await axios.get<GetAllCategoriesResponse | TaskCategoryFromAPI[]>(
-        'http://localhost:3000/api/categories/', 
+        `${API_URL}/api/categories/`, 
         config
       );
       
@@ -200,7 +201,7 @@ export const AdminCategory: React.FC = () => {
 
     try {
       const config = { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } };
-      const urlBase = 'http://localhost:3000/api/categories/'; 
+      const urlBase = `${API_URL}/api/categories/`; 
       if (isEditing && editingCategoryId) {
         await axios.patch(`${urlBase}${editingCategoryId}`, finalPayload, config);
         setFormMessage({ type: 'success', text: 'Categoria atualizada com sucesso!' });

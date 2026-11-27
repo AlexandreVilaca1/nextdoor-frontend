@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import {
   categoriaTarefa,
   CreateTaskPayload,
@@ -9,7 +10,7 @@ export async function fetchTasks(page: number = 1): Promise<{ task: criacaoTaref
   const token = Cookies.get("jwt");
 
   const response = await fetch(
-    `http://localhost:3000/api/taskCreations/neighborhood/?page=${page}`,
+    `${API_URL}/api/taskCreations/neighborhood/?page=${page}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,7 +35,7 @@ export async function updateTaskCreationStatus(
   const token = Cookies.get("jwt");
 
   const response = await fetch(
-    `http://localhost:3000/api/taskCreations/edit/${taskId}`,
+    `${API_URL}/api/taskCreations/edit/${taskId}`,
     {
       method: "PATCH",
       headers: {
@@ -65,7 +66,7 @@ export async function updateUserPoints(
   const token = Cookies.get("jwt");
 
   const response = await fetch(
-    `http://localhost:3000/api/users/edit/${userId}`,
+    `${API_URL}/api/users/edit/${userId}`,
     {
       method: "PATCH",
       headers: {
@@ -95,7 +96,7 @@ export async function updateUserStatus(
   const token = Cookies.get("jwt");
 
   const response = await fetch(
-    `http://localhost:3000/api/users/edit/${userId}`,
+    `${API_URL}/api/users/edit/${userId}`,
     {
       method: "PATCH",
       headers: {
@@ -126,7 +127,7 @@ export async function updateUserStatus(
 
 export async function fetchCategories(): Promise<categoriaTarefa[]> {
   const token = Cookies.get("jwt");
-  const response = await fetch("http://localhost:3000/api/categories", {
+  const response = await fetch(`${API_URL}/api/categories`, {
     headers: { Authorization: `Bearer ${token}` },
     credentials: "include",
   });
@@ -145,7 +146,7 @@ export async function createTask(
 ): Promise<criacaoTarefa> {
   const token = Cookies.get("jwt");
   const response = await fetch(
-    `http://localhost:3000/api/taskCreations/create`,
+    `${API_URL}/api/taskCreations/create`,
     {
       method: "POST",
       headers: {

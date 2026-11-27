@@ -1,10 +1,11 @@
+import { API_URL } from "../../config/api";
 import Cookies from 'js-cookie';
 import { realizacaoTarefa } from './taskRealizationTypes';
 
 export async function fetchTaskRealizations(): Promise<realizacaoTarefa[]> {
   const token = Cookies.get('jwt');
 
-  const response = await fetch('http://localhost:3000/api/taskRealizations/inExecution', {
+  const response = await fetch(`${API_URL}/api/taskRealizations/inExecution`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -25,7 +26,7 @@ export async function createTaskRealization(data: {
 }): Promise<any> {
   const token = Cookies.get('jwt');
 
-  const response = await fetch('http://localhost:3000/api/taskRealizations', {
+  const response = await fetch(`${API_URL}/api/taskRealizations`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ export async function createTaskRealization(data: {
   export async function updateTaskRealizationStatus(taskId: number, newState: number): Promise<void> {
     const token = Cookies.get('jwt');
   
-    const response = await fetch(`http://localhost:3000/api/taskRealizations/edit/${taskId}`, {
+    const response = await fetch(`${API_URL}/api/taskRealizations/edit/${taskId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

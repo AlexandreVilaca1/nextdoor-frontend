@@ -1,3 +1,4 @@
+import { API_URL } from "../config/api";
 import { useState, useEffect } from "react";
 import "../styles.css";
 import { fetchNeighborhoods } from "../features/Neighborhood/neighborhoodService";
@@ -60,7 +61,7 @@ export default function RegisterForm() {
         rua: street
       };
 
-      const response = await fetch("http://localhost:3000/api/users/register", {
+      const response = await fetch(`${API_URL}/api/users/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios"; 
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -49,7 +50,7 @@ export const GraphUsers = () => {
       }
 
       try {
-        const response = await axios.get<FetchUsersApiResponse>('http://localhost:3000/api/users/all', {
+        const response = await axios.get<FetchUsersApiResponse>(`${API_URL}/api/users/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
