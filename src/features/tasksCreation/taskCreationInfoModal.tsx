@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import React from 'react';
 import { criacaoTarefa } from './taskCreationTypes';
-import {createTaskRealization} from "../taskRealization/taskRealizationService"
+import { createTaskRealization } from "../taskRealization/taskRealizationService";
 import { updateTaskCreationStatus } from "./taskCreationService";
 
 interface TaskCreationModalProps {
   task: criacaoTarefa;
   onClose: () => void;
+  onUpdate: () => void;   
 }
 
-const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
+const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose, onUpdate }) => {
   const [show, setShow] = useState(false);
-  
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setShow(true);
@@ -24,19 +25,21 @@ const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
     }, 300);
   };
 
-  const handleTaskRealization = async () => {
+  const handleTaskCreation = async () => {
     try {
       await createTaskRealization({
         criacaoTarefaidTarefaCriada: task.idTarefaCriada
       });
-  
-      await updateTaskCreationStatus(task.idTarefaCriada, 3); //Aceite
-    //
-  
-      alert("Now you can see your task in execution on the page running task");
+
+      await updateTaskCreationStatus(task.idTarefaCriada, 3); // Aceite
+
+      alert("Agora podes ver a tarefa na página tarefa em realização ! ");
+
+      onUpdate();  // Atualiza a lista no componente pai
+
       handleClose();
     } catch (error: any) {
-      alert(error.message);
+      setError(error.message || "Erro ao criar tarefa. Verifique os dados.");
     }
   };
 
@@ -51,7 +54,7 @@ const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
         ${show ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold">{task.nomeTarefa}</h2>
+          <h2 className="text-[#4CAF4F] text-lg font-bold"><strong>{task.nomeTarefa}</strong></h2>
           <button
             onClick={handleClose}
             className="text-gray-500 hover:text-red-600 cursor-pointer font-bold text-xl"
@@ -73,10 +76,11 @@ const TaskModal: React.FC<TaskCreationModalProps> = ({ task, onClose }) => {
         </p>
 
         {/* Botão Realizar */}
+        {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
         <div className="flex justify-end">
           <button
-            onClick={handleTaskRealization}
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition"
+            onClick={handleTaskCreation}
+            className="px-4 py-2 text-sm font-medium text-white bg-[#4CAF4F] rounded-md hover:bg-[#3e8e41] focus:outline-none disabled:opacity-50 cursor-pointer"
           >
             Realizar
           </button>

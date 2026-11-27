@@ -1,4 +1,3 @@
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 function isAuthenticated() {
@@ -7,7 +6,7 @@ function isAuthenticated() {
     .some(cookie => cookie.trim().startsWith('jwt='));
 }
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children }: any) => {
   return isAuthenticated() ? children : <Navigate to="/login" />;
 };
 

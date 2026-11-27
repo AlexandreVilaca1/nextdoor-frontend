@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { realizacaoTarefa } from './taskRealizationTypes';
-import { createNotification } from '../notifications/notificationService';
-import { updateTaskRealizationStatus } from './taskRealizationService';
+import { abandonedTask, markTaskAsCompleted } from '../businessProcessTasksAndPoints/businessProcessService';
 
 interface TaskRealizationModalProps {
   task: realizacaoTarefa;
   onClose: () => void;
+  onUpdate: () => void; 
 }
 
-const TaskRealizationModal: React.FC<TaskRealizationModalProps> = ({ task, onClose }) => {
+const TaskRealizationModal: React.FC<TaskRealizationModalProps> = ({ task, onClose, onUpdate }) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -22,31 +22,27 @@ const TaskRealizationModal: React.FC<TaskRealizationModalProps> = ({ task, onClo
 
   const handleConcluida = async () => {
     try {
-      const massage = `O seu vizinho concluiu a tarefa, por favor comprove a conclusão da tarefa`
-      const taskRealizationId = task.idRealizacaoTarefa;
-      await updateTaskRealizationStatus(taskRealizationId, 6) //em espera de comprovação
-      await createNotification( massage ,taskRealizationId)
-      console.log('Notification sended sucessfully');
-      alert('Verify needed from task creator')
-      handleClose();    
+      await markTaskAsCompleted(task.idRealizacaoTarefa, task.criacaoTarefa.idTarefaCriada);
+      console.log('Notification sended successfully');
+      alert('Verificação precisa pelo criador da tarefa ! ');
+      handleClose();
+      onUpdate();  
     } catch (error) {
       console.error("Error sending the notification:", error);
-      alert('Error sending the notification')
+      alert('Error sending the notification');
     }
   };
 
-  const handleCancelar = async () => {
+  const handleAbandonar = async () => {
     try {
-      const massage = `O seu vizinho não realizou a tarefa, por favor recolha os seus pontos`
-      const taskRealizationId = task.idRealizacaoTarefa;
-      await updateTaskRealizationStatus(taskRealizationId, 5), //estado cancelada
-      await createNotification( massage ,taskRealizationId)
-      console.log('Notification sended sucessfully');
-      alert('Task completion cancelled')  
-      handleClose();    
+      await abandonedTask(task.idRealizacaoTarefa)
+      console.log('Notification sended successfully');
+      alert('Task completion abandoned');
+      handleClose();
+      onUpdate();  
     } catch (error) {
       console.error("Error sending the notification:", error);
-      alert('Error sending the notification')
+      alert('Error sending the notification');
     }
   };
 
@@ -90,16 +86,16 @@ const TaskRealizationModal: React.FC<TaskRealizationModalProps> = ({ task, onClo
         {/* Botões Concluída e Cancelar */}
         <div className="flex justify-end space-x-4">
           <button
-            onClick={handleConcluida}
-            className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none"
-          >
-            Concluída
+          className="px-4 py-2 text-sm font-medium text-white bg-red-400 rounded-md hover:bg-red-500 focus:outline-none cursor-pointer"
+            onClick={handleAbandonar}
+            >
+            Abandonar
           </button>
           <button
-            onClick={handleCancelar}
-            className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none"
+            onClick={handleConcluida}
+            className="px-4 py-2 text-sm font-medium text-white bg-[#4CAF4F] rounded-md hover:bg-[#3e8e41] focus:outline-none disabled:opacity-50 cursor-pointer"
           >
-            Cancelar realização
+            Concluída
           </button>
         </div>
       </div>

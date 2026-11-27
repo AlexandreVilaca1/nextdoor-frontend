@@ -1,7 +1,11 @@
-// src/components/taskRealization/TaskRealizationCard.tsx
 import React, { useState } from 'react';
 import { realizacaoTarefa } from './taskRealizationTypes';
 import TaskRealizationModal from './taskRealizationInfoModal';
+
+interface TaskRealizationCardProps {
+  task: realizacaoTarefa;
+  onUpdate: () => void;  // Adicionado onUpdate
+}
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -30,23 +34,25 @@ const getCategoryAccentColor = (categoria: string): string => {
     case 'Limpeza': return 'bg-blue-500';
     case 'Jardinagem': return 'bg-green-600';
     case 'Animais': return 'bg-red-600';
+    case 'Cozinha': return 'bg-pink-200';
+    case 'Compras': return 'bg-purple-600';
     default: return 'bg-gray-400';
   }
 };
 
-const TaskRealizationCard: React.FC<{ task: realizacaoTarefa }> = ({ task }) => {
+const TaskRealizationCard: React.FC<TaskRealizationCardProps> = ({ task, onUpdate }) => {
   const [showModal, setShowModal] = useState(false);
 
   const categoria = task.criacaoTarefa.categoriaTarefa;
-  const cor = getCategoryAccentColor(categoria.categoriaTarefa);
+  const corCategoria = getCategoryAccentColor(categoria.categoriaTarefa);
 
   return (
     <>
-      <div className="flex flex-col h-full py-2 container2">
+      <div className="flex flex-col w-full max-w-[350px] h-[200px] p-4 rounded-xl bg-white shadow-md">
         <div className="flex items-center mb-1">
-          <div className={`w-1 h-3.5 ${cor} mr-2.5 rounded-sm`}></div>
+          <div className={`w-1 h-3.5 ${corCategoria} mr-2.5 rounded-sm`}></div>
           <p className="text-xs text-gray-500">
-            {formatDate(task.criacaoTarefa.dataInicio)}
+            {formatDate(task.criacaoTarefa.dataInicio)} → {formatDate(task.criacaoTarefa.dataFim)}
           </p>
         </div>
 
@@ -64,7 +70,7 @@ const TaskRealizationCard: React.FC<{ task: realizacaoTarefa }> = ({ task }) => 
         </h3>
 
         <p className="text-xs text-gray-600 mb-2.5 flex-grow">
-          {getSubtitle(task.criacaoTarefa.descricaoTarefa)}
+          Descrição: {getSubtitle(task.criacaoTarefa.descricaoTarefa)}
         </p>
 
         <button
@@ -77,7 +83,11 @@ const TaskRealizationCard: React.FC<{ task: realizacaoTarefa }> = ({ task }) => 
       </div>
 
       {showModal && (
-        <TaskRealizationModal task={task} onClose={() => setShowModal(false)} />
+        <TaskRealizationModal 
+          task={task} 
+          onClose={() => setShowModal(false)} 
+          onUpdate={onUpdate} // Passar a função para o modal
+        />
       )}
     </>
   );
