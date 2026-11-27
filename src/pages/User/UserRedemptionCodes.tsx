@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import React, { useEffect, useState, useCallback } from 'react';
 import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
@@ -64,7 +65,7 @@ export const UserRedemptionCodes: React.FC = () => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:3000${imagePath}`;
+    return `${API_URL}${imagePath}`;
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -91,7 +92,7 @@ export const UserRedemptionCodes: React.FC = () => {
     }
 
     try {
-      const response = await axios.get<GetRedemptionCodesResponse>(`http://localhost:3000/api/redemptionCodes/`, {
+      const response = await axios.get<GetRedemptionCodesResponse>(`${API_URL}/api/redemptionCodes/`, {
         headers: { Authorization: `Bearer ${token}` },
         params: { page: pageToFetch, limit: ITEMS_PER_PAGE }
       });

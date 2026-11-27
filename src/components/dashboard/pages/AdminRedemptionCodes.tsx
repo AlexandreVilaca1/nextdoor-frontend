@@ -1,3 +1,4 @@
+import { API_URL } from "../../../config/api";
 import React, { useEffect, useState, useCallback } from 'react'; 
 import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
@@ -88,7 +89,7 @@ export const AdminRedemptionCodes: React.FC = () => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:3000${imagePath}`;
+    return `${API_URL}${imagePath}`;
   }, []);
 
 
@@ -131,7 +132,7 @@ export const AdminRedemptionCodes: React.FC = () => {
       Object.keys(params).forEach(key => params[key] === undefined && delete params[key]);
 
       const response = await axios.get<GetAllRedemptionCodesResponse>(
-        `http://localhost:3000/api/redemptionCodes/all`,
+        `${API_URL}/api/redemptionCodes/all`,
         { headers: { Authorization: `Bearer ${token}` }, params }
       );
       setCodes(response.data.redemptionCodes || []);
@@ -153,9 +154,9 @@ export const AdminRedemptionCodes: React.FC = () => {
       try {
         const config = { headers: { Authorization: `Bearer ${token}` } };
         const [estadosRes, estabRes, produtosRes] = await Promise.all([
-          axios.get<{ redemptionStatus: EstadoResgateOption[] }>(`http://localhost:3000/api/redemptionCodes/status`, config),
-          axios.get<{ establishments: EstabelecimentoLista[] }>(`http://localhost:3000/api/establishments/all/list`, config), 
-          axios.get<{ products: ProdutoLista[] }>(`http://localhost:3000/api/products/all/list`, config) 
+          axios.get<{ redemptionStatus: EstadoResgateOption[] }>(`${API_URL}/api/redemptionCodes/status`, config),
+          axios.get<{ establishments: EstabelecimentoLista[] }>(`${API_URL}/api/establishments/all/list`, config), 
+          axios.get<{ products: ProdutoLista[] }>(`${API_URL}/api/products/all/list`, config) 
         ]);
         setAllEstadosResgate(estadosRes.data.redemptionStatus || []);
         setAllEstabelecimentos(estabRes.data.establishments || []);

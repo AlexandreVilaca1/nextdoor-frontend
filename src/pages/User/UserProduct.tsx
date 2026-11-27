@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import React, { useEffect, useState, useMemo, useCallback, useRef, JSX, Fragment } from 'react';
 import axios, { AxiosError } from 'axios';
 import Cookies from 'js-cookie';
@@ -131,7 +132,7 @@ export const UserProduct: React.FC = () => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
-    return `http://localhost:3000${imagePath}`;
+    return `${API_URL}${imagePath}`;
   }, []);
 
   useEffect(() => {
@@ -140,7 +141,7 @@ export const UserProduct: React.FC = () => {
         if (token) {
             try {
                 const response = await axios.get<{ user: { tipoUtilizadoridTipoUtilizador?: number } }>(
-                    'http://localhost:3000/api/users/profile',
+                    `${API_URL}/api/users/profile`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setIsCurrentUserAdmin(response.data.user?.tipoUtilizadoridTipoUtilizador === 1);
@@ -177,7 +178,7 @@ export const UserProduct: React.FC = () => {
     }
 
     try {
-      let productsUrl = `http://localhost:3000/api/products/neighborhood?page=${page}&limit=12`;
+      let productsUrl = `${API_URL}/api/products/neighborhood?page=${page}&limit=12`;
       const currentAdminSelectedId = adminOverrideNeighborhoodId || (isCurrentUserAdmin ? localStorage.getItem(ADMIN_SELECTED_NEIGHBORHOOD_ID_KEY) : null);
 
       if (isCurrentUserAdmin && currentAdminSelectedId) {
@@ -186,7 +187,7 @@ export const UserProduct: React.FC = () => {
           console.warn("UserProduct: Admin não selecionou vizinhança. Nenhum produto será carregado pela rota /neighborhood.");
           setProdutos([]);
           setTotalPages(0);
-          const categoriesResponse = await axios.get<ProductTypesApiResponse>(`http://localhost:3000/api/product-types/`, { headers: { Authorization: `Bearer ${token}` }});
+          const categoriesResponse = await axios.get<ProductTypesApiResponse>(`${API_URL}/api/product-types/`, { headers: { Authorization: `Bearer ${token}` }});
           setCategorias(categoriesResponse.data.productTypes || []);
           setIsLoading(false);
           return;
@@ -195,7 +196,7 @@ export const UserProduct: React.FC = () => {
 
       const [productsResponse, categoriesResponse] = await Promise.all([
         axios.get<NeighborhoodProductsResponse>(productsUrl, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get<ProductTypesApiResponse>(`http://localhost:3000/api/product-types/`, { headers: { Authorization: `Bearer ${token}` }})
+        axios.get<ProductTypesApiResponse>(`${API_URL}/api/product-types/`, { headers: { Authorization: `Bearer ${token}` }})
       ]);
 
       const fetchedProducts = productsResponse.data.products || [];
@@ -289,7 +290,7 @@ export const UserProduct: React.FC = () => {
 
     try {
       const payload = { ProdutoidProduto: productToRedeem.id };
-      const response = await axios.post<CreateRedemptionCodeResponse>( `http://localhost:3000/api/redemptionCodes`, payload, { headers: { Authorization: `Bearer ${token}` } } );
+      const response = await axios.post<CreateRedemptionCodeResponse>( `${API_URL}/api/redemptionCodes`, payload, { headers: { Authorization: `Bearer ${token}` } } );
       if (response.data.redemptionCode && response.data.redemptionCode.codigo) {
         const nomeProdutoResgatado = response.data.redemptionCode.ProdutoResgatado?.nomeProduto || productToRedeem.nome;
         setRedeemMessage({ type: 'success', text: `Produto "${nomeProdutoResgatado}" resgatado! Seu código é: ${response.data.redemptionCode.codigo}` });

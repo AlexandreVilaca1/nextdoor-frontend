@@ -1,59 +1,3 @@
-<<<<<<< Updated upstream
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
-=======
 # NextDoor Frontend
 
 This project contains the frontend of the NextDoor application: a neighbourhood platform where
@@ -65,8 +9,8 @@ products from partner establishments.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/AlexandreVilaca1/nextodoor-frontend.git
-cd nextodoor-frontend
+git clone https://github.com/AlexandreVilaca1/nextdoor-frontend.git
+cd nextdoor-frontend
 ```
 
 ### 2. Start the Backend
@@ -74,9 +18,17 @@ cd nextodoor-frontend
 This app consumes the API at `http://localhost:3000`, so the backend has to be running first
 (see [nextdoor-backend](https://github.com/AlexandreVilaca1/nextdoor-backend)).
 
-> ⚠️ The API address is fixed in `http://localhost:3000` inside the `*Service.tsx` files. The
-> backend CORS only allows the origin `http://localhost:5173`, which is the default `vite dev`
-> port.
+The base URL comes from `VITE_API_URL` and, when it is not set, the app falls back to
+`http://localhost:3000` — a fresh clone runs with `npm run dev` and no setup. To point it
+somewhere else:
+
+```bash
+cp .env.example .env     # then edit VITE_API_URL
+```
+
+> ⚠️ `VITE_*` values are compiled into the bundle, so they are public: never put secrets in
+> `.env`. The backend CORS only allows the origin `http://localhost:5173`, which is the default
+> `vite dev` port.
 
 ### 3. Install Dependencies
 
@@ -103,10 +55,9 @@ npm run preview   # serves the production build
 
 ## ✅ Notes
 
-- Authentication uses the JWT returned by the backend, stored in the `jwt` cookie and sent with
-  every request.
+- Authentication uses the JWT returned by the backend: it is stored in the `jwt` cookie at login
+  (1 hour) and sent as `Authorization: Bearer <token>` on the API calls.
 - There are no automated tests; the check is the TypeScript build (`npm run build`).
 - `npm run lint` still reports issues inherited from the original code (mostly `no-explicit-any`
   and unused variables).
 - This setup is intended for local development.
->>>>>>> Stashed changes

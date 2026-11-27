@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import Cookies from "js-cookie";
 import { Notificacao } from "./notificationTypes";
 
@@ -8,7 +9,7 @@ export async function fetchNotifications(page: number = 1): Promise<{
 }> {
   const token = Cookies.get('jwt');
 
-  const response = await fetch(`http://localhost:3000/api/notifications?page=${page}`, {
+  const response = await fetch(`${API_URL}/api/notifications?page=${page}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -34,7 +35,7 @@ export async function fetchNotifications(page: number = 1): Promise<{
 export async function createNotification(massage: string, taskRealizationId: number): Promise<Notificacao> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch("http://localhost:3000/api/notifications", {
+  const response = await fetch(`${API_URL}/api/notifications`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -60,7 +61,7 @@ export async function createNotification(massage: string, taskRealizationId: num
 export async function fetchNotificationById(notificationId: number): Promise<Notificacao> {
   const token = Cookies.get("jwt");
 
-  const response = await fetch(`http://localhost:3000/api/notifications/${notificationId}`, {
+  const response = await fetch(`${API_URL}/api/notifications/${notificationId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

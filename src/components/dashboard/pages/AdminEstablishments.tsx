@@ -1,3 +1,4 @@
+import { API_URL } from "../../../config/api";
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import axios, { AxiosError } from 'axios';
 import { Sidebar } from '../Sidebar';
@@ -96,9 +97,9 @@ export const AdminEstablishments = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       const [estabRes, neighRes, addrRes] = await Promise.all([
-        axios.get('http://localhost:3000/api/establishments/all', config),
-        axios.get('http://localhost:3000/api/neighborhoods/', config),
-        axios.get('http://localhost:3000/api/addresses', config)
+        axios.get(`${API_URL}/api/establishments/all`, config),
+        axios.get(`${API_URL}/api/neighborhoods/`, config),
+        axios.get(`${API_URL}/api/addresses`, config)
       ]);
 
       setAllEstabelecimentos(estabRes.data.establishments || []);
@@ -152,13 +153,13 @@ export const AdminEstablishments = () => {
       setMessage({ text: 'Todos os campos marcados com * são obrigatórios.', type: 'error' });
       return;
     }
-    
+
     setIsSubmitting(true);
     setMessage(null);
 
     try {
       const addressPayload = { rua, numeroPorta, codigoPostal, freguesia, distrito };
-      const addressRes = await axios.post('http://localhost:3000/api/addresses', addressPayload, {
+      const addressRes = await axios.post(`${API_URL}/api/addresses`, addressPayload, {
       });
 
       if (addressRes.status !== 201 || !addressRes.data.address || !addressRes.data.address.idEndereco) {
@@ -171,7 +172,7 @@ export const AdminEstablishments = () => {
       const nomeFreguesiaNormalizado = freguesia.trim();
 
       try {
-        const searchRes = await axios.get(`http://localhost:3000/api/neighborhoods/byName/${encodeURIComponent(nomeFreguesiaNormalizado)}`, {
+        const searchRes = await axios.get(`${API_URL}/api/neighborhoods/byName/${encodeURIComponent(nomeFreguesiaNormalizado)}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         if (searchRes.data && searchRes.data.neighborhood && searchRes.data.neighborhood.idVizinhanca) {
@@ -182,7 +183,7 @@ export const AdminEstablishments = () => {
       } catch (searchError: any) {
         if (axios.isAxiosError(searchError) && searchError.response && searchError.response.status === 404) {
             const neighborhoodPayload = { nomeFreguesia: nomeFreguesiaNormalizado };
-            const neighborhoodRes = await axios.post('http://localhost:3000/api/neighborhoods/', neighborhoodPayload, {
+            const neighborhoodRes = await axios.post(`${API_URL}/api/neighborhoods/`, neighborhoodPayload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (neighborhoodRes.status !== 201 || !neighborhoodRes.data.neighborhood || !neighborhoodRes.data.neighborhood.idVizinhanca) {
@@ -203,17 +204,17 @@ export const AdminEstablishments = () => {
         EnderecoidEndereco: newAddressId,
         VizinhancaidVizinhanca: vizinhancaId,
       };
-      await axios.post('http://localhost:3000/api/establishments/', establishmentPayload, {
+      await axios.post(`${API_URL}/api/establishments/`, establishmentPayload, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       setMessage({ text: 'Estabelecimento adicionado com sucesso!', type: 'success' });
       setShowFormModal(false);
       setNewEstablishment({});
-      fetchData(); 
+      fetchData();
 
     } catch (err: any) {
-      if (!message) { 
+      if (!message) {
          handleError(err, err.message || 'Erro ao adicionar estabelecimento.');
       }
     } finally {
@@ -265,12 +266,12 @@ export const AdminEstablishments = () => {
 
         let startPage = Math.max(1, currentPage - halfPagesToShow);
         let endPage = Math.min(totalPages, currentPage + halfPagesToShow);
-        
-        if (currentPage <= halfPagesToShow) { 
+
+        if (currentPage <= halfPagesToShow) {
           startPage = 1;
           endPage = Math.min(totalPages, maxPagesToShow -1 < totalPages ? maxPagesToShow -1 : totalPages);
-          if(totalPages > maxPagesToShow && endPage < totalPages -1) endPage = maxPagesToShow -2 ; 
-        } else if (currentPage >= totalPages - halfPagesToShow) { 
+          if(totalPages > maxPagesToShow && endPage < totalPages -1) endPage = maxPagesToShow -2 ;
+        } else if (currentPage >= totalPages - halfPagesToShow) {
           startPage = Math.max(1, totalPages - (maxPagesToShow -2) > 1 ? totalPages - (maxPagesToShow -2) : 1);
           endPage = totalPages;
         }
@@ -283,7 +284,7 @@ export const AdminEstablishments = () => {
         if (currentPage < totalPages - halfPagesToShow - 2 && totalPages > maxPagesToShow +1 && endPage < totalPages -1) pageNumbers.push('...');
         if (totalPages > 1 && !pageNumbers.includes(totalPages) && endPage < totalPages) pageNumbers.push(totalPages);
     }
-    return [...new Set(pageNumbers)]; 
+    return [...new Set(pageNumbers)];
   };
 
   if (isLoadingData && allEstabelecimentos.length === 0) {
@@ -365,13 +366,13 @@ export const AdminEstablishments = () => {
                     ))}
                     </select>
                 </div>
-                <div className="mt-4 md:mt-0 lg:col-start-3"> 
+                <div className="mt-4 md:mt-0 lg:col-start-3">
                     <button
                         onClick={() => { setSearchTerm(''); setSelectedFilterNeighborhoodId(''); setCurrentPage(1);}}
                         className="btn-secondary w-full flex items-center justify-center py-2.5"
                         title="Limpar todos os filtros"
                     >
-                        <XMarkIcon className="h-5 w-5 mr-2" /> 
+                        <XMarkIcon className="h-5 w-5 mr-2" />
                         Limpar Filtros
                     </button>
                 </div>

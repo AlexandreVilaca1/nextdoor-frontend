@@ -1,3 +1,4 @@
+import { API_URL } from "../../config/api";
 import React, { useState, useEffect, useRef } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios'; 
@@ -28,7 +29,7 @@ export const DashboardHeader: React.FC = () => {
       if (localToken) {
         try {
           const response = await axios.get<{ user: AdminUserData }>( 
-            'http://localhost:3000/api/users/profile',
+            `${API_URL}/api/users/profile`,
             {
               headers: { Authorization: `Bearer ${localToken}` }, 
             }
