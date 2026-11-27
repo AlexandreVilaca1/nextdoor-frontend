@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -52,3 +53,60 @@ export default tseslint.config({
   },
 })
 ```
+=======
+# NextDoor Frontend
+
+This project contains the frontend of the NextDoor application: a neighbourhood platform where
+users publish tasks, earn points by helping their neighbours and redeem those points for
+products from partner establishments.
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/AlexandreVilaca1/nextodoor-frontend.git
+cd nextodoor-frontend
+```
+
+### 2. Start the Backend
+
+This app consumes the API at `http://localhost:3000`, so the backend has to be running first
+(see [nextdoor-backend](https://github.com/AlexandreVilaca1/nextdoor-backend)).
+
+> ⚠️ The API address is fixed in `http://localhost:3000` inside the `*Service.tsx` files. The
+> backend CORS only allows the origin `http://localhost:5173`, which is the default `vite dev`
+> port.
+
+### 3. Install Dependencies
+
+```bash
+npm ci
+```
+
+### 4. Run the Project
+
+```bash
+npm run dev
+```
+
+The app is served on `http://localhost:5173`.
+
+### 5. Build
+
+```bash
+npm run build     # tsc -b && vite build -> dist/
+npm run preview   # serves the production build
+```
+
+---
+
+## ✅ Notes
+
+- Authentication uses the JWT returned by the backend, stored in the `jwt` cookie and sent with
+  every request.
+- There are no automated tests; the check is the TypeScript build (`npm run build`).
+- `npm run lint` still reports issues inherited from the original code (mostly `no-explicit-any`
+  and unused variables).
+- This setup is intended for local development.
+>>>>>>> Stashed changes
